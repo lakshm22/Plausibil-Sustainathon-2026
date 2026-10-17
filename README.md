@@ -1,271 +1,78 @@
-# Plausibil
-### Explainable Corporate Sustainability Disclosure Plausibility Platform
+# Plausibil — Periodic ESG Disclosure Monitoring Prototype
 
-**Making corporate sustainability disclosure review more explainable, traceable, and evidence-driven.**
+Plausibil is an explainable corporate sustainability disclosure monitoring prototype. It is designed to help an analyst/auditor monitor **weekly, monthly, quarterly and annual observations**, normalize reported metrics, surface internal inconsistencies, and investigate review signals with source evidence.
 
-Plausibil is a sustainability disclosure analysis platform designed to help reviewers examine corporate environmental and greenhouse gas emissions disclosures. It focuses on identifying unusual patterns, highlighting potential inconsistencies, and supporting evidence-oriented review through document processing and explainable analytical techniques.
+## What changed in this version
 
-Developed as a two-member hackathon project, Plausibil explores how data analysis and machine learning can support more structured sustainability disclosure assessment.
+- Redesigned dashboard inspired by the supplied Plausibil reference UI.
+- Working FastAPI + React/Vite integration.
+- SQLite-first setup; PostgreSQL remains supported.
+- Fixed SQLAlchemy result handling (`.limit()` is applied to the SQL statement before execution).
+- Periodic report model with `reporting_frequency`, `period_start`, and `period_end`.
+- Monthly demo observations seeded automatically so the dashboard is useful immediately.
+- Weekly/monthly/quarterly/annual ingestion controls in the UI.
+- Periodic time-series feature engineering for anomaly detection.
+- Isolation Forest uses periodic changes and intensity features when enough complete observations exist.
+- Rule-based checks for totals, intensity and large period-over-period movements.
+- Source evidence is linked to review signals.
+- Partial frontend loading: if one API endpoint fails, the rest of the dashboard can still load and the failing endpoint is named.
+- CSV export for normalized metrics.
 
-> **An anomaly is a signal for further investigation, not proof of fraud or deliberate misreporting.**
+## Product framing
 
-## Problem Statement
+Plausibil generates **review signals**, not findings of wrongdoing. A model score is not a probability. Human review is required before drawing conclusions from a signal.
 
-**PS-13-S1: Are Corporate Emissions Disclosures Even Plausible?**
+## Why periodic data?
 
-Corporate sustainability disclosures are important for understanding environmental performance. However, reviewing them can require significant manual effort, particularly when information is distributed across lengthy documents, presented in inconsistent formats, or difficult to compare.
+Annual reports provide valuable disclosure context but only a small number of observations. Weekly/monthly snapshots can provide more temporal observations, making it possible to detect changes between annual disclosures and give a time-series anomaly model more training examples. More data does **not automatically guarantee higher model accuracy**; the value depends on data quality, coverage, consistency and the relevance of the features.
 
-Plausibil addresses this challenge by exploring ways to:
+The prototype therefore keeps annual reports as an anchor while allowing more frequent observations as additional evidence.
 
-- Extract relevant information from sustainability reports.
-- Examine reported emissions and related environmental metrics.
-- Identify unusual observations and potential inconsistencies.
-- Make analytical findings easier to interpret.
-- Support investigation through available source evidence.
+## Windows / PowerShell quick start
 
-## Proposed Solution
+### Backend
 
-Plausibil approaches sustainability disclosure assessment as an **explainable plausibility analysis problem**.
-
-The platform is designed to combine document processing, structured data analysis, anomaly detection, and explainability techniques to surface observations that may warrant closer examination.
-
-Its approach emphasizes three principles:
-
-- **Plausibility over accusation:** Unusual values are review signals, not proof of wrongdoing.
-- **Explainability over black-box predictions:** Findings should be understandable wherever the analytical method supports it.
-- **Evidence over unsupported conclusions:** Reviewers should be able to examine the underlying source information where available.
-
-## Key Features
-
-The following capabilities describe the project's intended scope. Their actual availability depends on the implementation in the repository.
-
-### Document Processing
-- PDF text extraction.
-- Extraction of relevant tabular information.
-- OCR-assisted processing for supported scanned documents, where configured.
-- Preparation of extracted information for analysis.
-
-### Emissions Data Analysis
-- Examination of available emissions-related metrics.
-- Identification of potentially unusual values and patterns.
-- Comparison of relevant observations when sufficient comparable data exists.
-
-### Anomaly Detection
-- Planned use of Isolation Forest for identifying unusual observations.
-- Flagging of potential anomalies for further review.
-- Analysis of patterns without treating statistical outliers as definitive evidence of incorrect reporting.
-
-### Explainable Analysis
-- Exploration of SHAP for interpreting supported model predictions.
-- More transparent presentation of analytical signals.
-- Support for human-led investigation rather than unexplained automated judgments.
-
-### Evidence-Oriented Review
-- Association of findings with source information where supported by the implementation.
-- Support for checking extracted information against available documents.
-- Emphasis on traceability and contextual assessment.
-
-## How It Works
-
-1. **Document input:** Provide a supported sustainability or emissions disclosure.
-2. **Document extraction:** Extract relevant text and tables.
-3. **Data preparation:** Organize extracted information for analysis.
-4. **Plausibility analysis:** Examine metrics and identify potential inconsistencies.
-5. **Anomaly detection:** Apply suitable detection methods to the available data.
-6. **Explainability:** Provide interpretable information about findings where supported.
-7. **Human review:** Examine the evidence and determine whether further investigation is necessary.
-
-The quality of the results depends on extraction accuracy, data completeness, model configuration, and the context in which the reported values are interpreted.
-
-## Technology Stack
-
-| Component | Technologies |
-|---|---|
-| Frontend | React, Vite |
-| Styling | Tailwind CSS |
-| Visualization | Recharts |
-| API communication | Axios |
-| Backend | Python, FastAPI |
-| Data validation | Pydantic |
-| PDF processing | PyMuPDF, pdfplumber |
-| OCR | Tesseract |
-| Data analysis | Pandas, NumPy |
-| Anomaly detection | Isolation Forest |
-| Explainability | SHAP |
-| Database | SQLite in the earlier setup |
-
-The table reflects the project's discussed technology stack. Confirm the actual dependencies against the repository before treating every listed component as implemented.
-
-## Architecture
-
-```text
-           ┌───────────────────────┐
-           │         User          │
-           └───────────┬───────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │ React + Vite Frontend │
-           └───────────┬───────────┘
-                       │ HTTP / API
-                       ▼
-           ┌───────────────────────┐
-           │    FastAPI Backend    │
-           └───────────┬───────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │ Document Processing   │
-           │ and Data Preparation  │
-           └───────────┬───────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │ Plausibility Analysis │
-           │ and Anomaly Detection │
-           └───────────┬───────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │ Reviewable Findings   │
-           │ and Source Evidence   │
-           └───────────────────────┘
+```powershell
+cd backend
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload
 ```
 
-This diagram represents the intended logical workflow. The actual data flow and implemented modules should be verified against the current codebase.
+API: `http://127.0.0.1:8000`
+Swagger: `http://127.0.0.1:8000/docs`
+Health: `http://127.0.0.1:8000/api/health`
 
-## Getting Started
+### Frontend
 
-### Prerequisites
+Open a second PowerShell window:
 
-- Node.js and npm
-- Python and pip
-- Git
-
-Additional system dependencies may be required if OCR or other optional components are enabled.
-
-### Clone the Repository
-
-```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd <YOUR_PROJECT_DIRECTORY>
-```
-
-Replace the placeholders with your repository URL and directory name.
-
-### Frontend Setup
-
-Navigate to the directory containing the frontend's `package.json` file.
-
-```bash
+```powershell
+cd frontend
 npm install
 npm run dev
 ```
 
-Open the local URL displayed by Vite.
+Open the Vite URL shown in the terminal, normally `http://127.0.0.1:5173`.
 
-### Backend Setup
+### If you already have an older SQLite database
 
-Navigate to the backend directory.
+The backend includes a small SQLite compatibility migration that adds the periodic-report columns when they are missing. For a completely clean demo, you can also delete `backend/plausibil.db` and restart the backend; the demo dataset will be seeded again.
 
-Create a virtual environment:
+## Ingestion flow
 
-```bash
-python -m venv .venv
-```
+1. Select a PDF in **Report Ingestion**.
+2. Enter company and reporting cadence.
+3. Optionally provide period start/end dates.
+4. FastAPI stores the report and processes it in the background.
+5. PDF text is extracted.
+6. Metrics are normalized.
+7. Rule-based checks run.
+8. Historical periodic observations are assembled.
+9. Isolation Forest is run when enough complete observations exist.
+10. Review signals receive source evidence.
 
-Activate it on Windows PowerShell:
+## Notes on the ML prototype
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
+The model intentionally uses a conservative minimum of 8 complete periodic observations for the Isolation Forest path. With fewer observations, the API reports that ML is unavailable rather than pretending that a tiny sample is reliable.
 
-Install the dependencies if a `requirements.txt` file is present:
-
-```bash
-pip install -r requirements.txt
-```
-
-Start the application using the actual FastAPI entry point. For example, if the application object is named `app` in `main.py`:
-
-```bash
-uvicorn main:app --reload
-```
-
-When enabled, FastAPI's interactive API documentation is typically available at `/docs`.
-
-**Note:** Adjust directory names, entry points, and commands to match the actual repository.
-
-## Project Structure
-
-The following is a high-level illustration. Replace it with the exact directory structure if the repository differs.
-
-```text
-Plausibil/
-├── frontend/
-│   └── ...                  # React + Vite application
-├── backend/
-│   └── ...                  # FastAPI application
-├── docs
-├── data
-├── README.md
-├── LICENSE
-└── .gitignore
-```
-
-## Responsible AI and Limitations
-
-Plausibil is intended to assist sustainability disclosure review, not replace human judgment or independent verification.
-
-- An anomaly does not prove fraud, deception, or deliberate misreporting.
-- Unusual values can have legitimate operational or methodological explanations.
-- Poor-quality document extraction can introduce errors.
-- Incomplete data can affect comparisons and analytical results.
-- Explainability methods describe aspects of model behavior; they do not independently establish factual correctness.
-- The absence of an anomaly does not guarantee that a disclosure is accurate.
-
-All findings should be interpreted as review signals requiring contextual assessment and, where appropriate, independent verification.
-
-## Future Scope
-
-Potential improvements include:
-
-- Expanded support for sustainability report formats.
-- Improved extraction and validation of emissions-related tables.
-- Comparisons across reporting periods where data is comparable.
-- Better source-level evidence traceability.
-- Additional visualizations for analytical findings.
-- Evaluation against documented test datasets.
-- Improved handling of different reporting methodologies.
-
-These are potential extensions, not claims about currently implemented features.
-
-## SDG Alignment
-
-Plausibil aligns with **United Nations Sustainable Development Goal 13: Climate Action**.
-
-By supporting the structured examination of corporate emissions disclosures, the project explores how technology can contribute to more transparent and evidence-oriented sustainability reporting.
-
-Plausibil focuses on analyzing disclosed information; it does not independently measure a company's environmental impact or certify its emissions data.
-
-## Team
-
-Plausibil was developed by a two-member team as a hackathon project.
-
-| Contributor | GitHub Profile |
-|---|---|
-| Lakshitha Mathiyalagan (Project Design & Development) | [@lakshm22](https://github.com/lakshm22) |
-| V. C. Keerthanapriya (Testing & Validation) | [@keeyaa-3](https://github.com/keeyaa-3) |
-
-
-## License
-
-This project is licensed under the **MIT License**.
-
-You are free to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software, subject to the terms of the license.
-
-See the [LICENSE](LICENSE) file for the complete license text.
-
----
-
-*Plausibil — Explainable analysis for more transparent sustainability disclosure review.*
+The model features include period-over-period changes and intensity features. This is a prototype for monitoring, not a validated production fraud detector.
