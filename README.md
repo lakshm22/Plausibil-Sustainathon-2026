@@ -206,6 +206,8 @@ Plausibil/
 │   └── ...                  # React + Vite application
 ├── backend/
 │   └── ...                  # FastAPI application
+├── docs
+├── data
 ├── README.md
 ├── LICENSE
 └── .gitignore
