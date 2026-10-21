@@ -3,9 +3,11 @@
 
 **Can we trust what companies report about sustainability?**
 
-Plausibil is an explainable sustainability monitoring prototype that helps analysts examine corporate Environmental, Social, and Governance (ESG) disclosures, track reported emissions metrics over time, and identify unusual patterns that deserve further investigation.
+Plausibil is an AI-powered ESG disclosure monitoring prototype that helps analysts examine corporate sustainability reports, identify unusual emissions patterns, and investigate potentially inconsistent disclosures.
 
-Instead of treating every reported number as automatically reliable, Plausibil helps users understand **what changed, what looks unusual, and where the supporting evidence comes from.**
+Combining **rule-based validation, Isolation Forest anomaly detection, and SHAP-based explainability**, Plausibil helps users move beyond simply detecting anomalies to understanding the factors contributing to them.
+
+**Detect unusual patterns. Understand the contributing factors. Trace the evidence.**
 
 > Built for Sustainathon 2026.
 
@@ -30,33 +32,34 @@ It turns uploaded reports and historical observations into structured metrics an
 
 **Important:** Plausibil flags patterns for human review. It does not automatically establish fraud, greenwashing, or deliberate misconduct.
 
-## How It Works
+## ⚙️ How It Works
 
-The workflow can be understood in six steps:
-
-1. **Upload a report** — Provide a company's sustainability report in PDF format.
-2. **Extract information** — Retrieve report text and identify relevant metrics.
-3. **Normalize metrics** — Organize reported values into a consistent structure.
-4. **Check for inconsistencies** — Apply rules to identify unusual totals, intensities, and changes.
-5. **Analyze historical trends** — Use periodic observations and Isolation Forest anomaly detection when sufficient data is available.
-6. **Review the evidence** — Examine flagged signals alongside their supporting source evidence.
+1. **Report ingestion** — Upload sustainability reports for processing.
+2. **Metric extraction and normalization** — Convert relevant reported figures into structured, comparable metrics.
+3. **Rule-based validation** — Check for inconsistencies, unusual values, and significant changes.
+4. **Anomaly detection** — Use Isolation Forest to identify observations that deviate from expected patterns.
+5. **Explainability with SHAP** — Analyze feature contributions to help explain the model's anomaly scores or predictions.
+6. **Evidence-based review** — Present flagged observations and supporting source evidence for further investigation.
 
 ### The workflow at a glance
 
-`PDF Report → Text Extraction → Metric Normalization → Validation → Anomaly Detection → Evidence-Based Review`
+`PDF Report → Metric Extraction → Normalization → Validation → Isolation Forest → SHAP Explanations → Evidence-Based Review`
+
+*Anomaly detection identifies patterns worth investigating; SHAP helps explain model behavior but does not independently establish why a company reported a particular value or prove misconduct.*
 
 ## Key Features
 
-| Feature | What it does |
+| Feature | Description |
 |---|---|
-| 📄 Report ingestion | Processes uploaded sustainability reports |
-| 📊 Metric normalization | Structures reported metrics for comparison |
-| 🧮 Rule-based checks | Flags unusual totals, intensities, and period-over-period movements |
-| 🤖 Anomaly detection | Uses Isolation Forest when enough complete observations are available |
-| 📅 Periodic monitoring | Supports weekly, monthly, quarterly, and annual reporting periods |
-| 🔎 Source evidence | Connects review signals to supporting evidence |
-| 📤 CSV export | Exports normalized metrics for further analysis |
-| 📈 Monitoring dashboard | Brings metrics and review signals together in one interface |
+| **Report Ingestion** | Upload and process sustainability reports in PDF format. |
+| **Metric Normalization** | Organize reported ESG metrics into a consistent structure for comparison. |
+| **Rule-Based Validation** | Flag unusual values, inconsistencies, and significant changes in reported metrics. |
+| **Anomaly Detection** | Use Isolation Forest to identify observations that deviate from expected patterns. |
+| **SHAP Explainability** | Understand how input features contribute to model outputs, making anomaly analysis more interpretable. |
+| **Periodic Monitoring** | Track ESG metrics across reporting periods to identify unusual trends over time. |
+| **Evidence Traceability** | Link flagged observations to supporting source evidence for further investigation. |
+| **CSV Export** | Export normalized metrics for further analysis. |
+| **Interactive Dashboard** | Explore reported metrics, monitoring results, and anomaly signals in one place. |
 
 ## System Architecture
 
@@ -67,20 +70,25 @@ Plausibil uses a frontend-backend architecture.
 - Lets users interact with report ingestion and monitoring features.
 - Displays metrics and review signals.
 
-**Backend — FastAPI**
+**Backend — Python + FastAPI**
 - Exposes API endpoints.
 - Processes uploaded reports.
 - Coordinates normalization, validation, and anomaly detection.
 - Provides monitoring data to the frontend.
 
-**Data and analysis**
-- SQLite is the default database setup.
-- PostgreSQL is also supported.
-- Isolation Forest provides anomaly detection when sufficient historical observations exist.
+### Analysis & Explainability
+- **Rule-Based Validation:** Identifies predefined inconsistencies and unusual metric changes.
+- **Isolation Forest:** Detects observations that differ from learned data patterns.
+- **SHAP:** Helps interpret feature contributions to model outputs, providing additional context for investigating flagged observations.
+
+### Data Layer
+- **SQLite:** Default database configuration.
+- **PostgreSQL:** Supported alternative database.
+- **Source Evidence:** Supports traceability between reported metrics and their originating documents.
 
 ### Data flow
 
-`User → React Dashboard → FastAPI → Database & Analysis Pipeline → Review Signals → Dashboard`
+`Report Upload → Data Processing → Validation → Anomaly Detection → SHAP Explanations → Dashboard Visualization`
 
 ## Technology Stack
 
@@ -166,7 +174,7 @@ Plausibil is a prototype for sustainability disclosure monitoring, not a product
 - An unusual value is not necessarily incorrect or misleading.
 - Review signals require human investigation and contextual interpretation.
 
-The system is designed to support analysts, not replace their judgment.
+> **Explainable by design:** Isolation Forest helps identify unusual patterns, while SHAP helps interpret the contribution of input features to the model's output. Flags are intended to support human review, not automatically establish fraud or greenwashing.
 
 ---
 
