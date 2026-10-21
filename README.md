@@ -150,7 +150,9 @@ Plausibil-Sustainathon-2026/
 │   └── raw/          # Raw input data
 ├── docs/             # Project documentation
 ├── .env.example      # Example environment configuration
+├── .gitignore
 ├── docker-compose.yml
+├── LICENSE
 └── README.md
 ```
 
