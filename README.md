@@ -1,4 +1,4 @@
-# 🔎 Plausibil
+# Plausibil
 ### AI-Powered ESG Disclosure Monitoring
 
 **Can we trust what companies report about sustainability?**
@@ -22,7 +22,7 @@ Companies publish sustainability and emissions disclosures, but interpreting the
 
 These challenges make sustainability disclosures harder to compare and investigate.
 
-## 💡 Our Solution
+## Our Solution
 
 Plausibil combines metric normalization, rule-based validation, and anomaly detection to help analysts review sustainability disclosures more systematically.
 
@@ -30,7 +30,7 @@ It turns uploaded reports and historical observations into structured metrics an
 
 **Important:** Plausibil flags patterns for human review. It does not automatically establish fraud, greenwashing, or deliberate misconduct.
 
-## ⚙️ How It Works
+## How It Works
 
 The workflow can be understood in six steps:
 
@@ -45,7 +45,7 @@ The workflow can be understood in six steps:
 
 `PDF Report → Text Extraction → Metric Normalization → Validation → Anomaly Detection → Evidence-Based Review`
 
-## ✨ Key Features
+## Key Features
 
 | Feature | What it does |
 |---|---|
@@ -58,7 +58,7 @@ The workflow can be understood in six steps:
 | 📤 CSV export | Exports normalized metrics for further analysis |
 | 📈 Monitoring dashboard | Brings metrics and review signals together in one interface |
 
-## 🏗️ System Architecture
+## System Architecture
 
 Plausibil uses a frontend-backend architecture.
 
@@ -82,7 +82,7 @@ Plausibil uses a frontend-backend architecture.
 
 `User → React Dashboard → FastAPI → Database & Analysis Pipeline → Review Signals → Dashboard`
 
-## 🧰 Technology Stack
+## Technology Stack
 
 - **Frontend:** React, Vite
 - **Backend:** Python, FastAPI
@@ -91,7 +91,7 @@ Plausibil uses a frontend-backend architecture.
 - **Machine learning:** Isolation Forest
 - **Development:** Node.js, npm, Uvicorn
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -140,7 +140,7 @@ http://127.0.0.1:5173
 
 Keep both terminals running while using the application.
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 Plausibil-Sustainathon-2026/
@@ -154,7 +154,7 @@ Plausibil-Sustainathon-2026/
 └── README.md
 ```
 
-## ⚠️ Limitations
+## Limitations
 
 Plausibil is a prototype for sustainability disclosure monitoring, not a production-grade fraud detection system.
 
@@ -167,7 +167,7 @@ The system is designed to support analysts, not replace their judgment.
 
 ---
 
-## 🌱 Why Plausibil?
+## Why Plausibil?
 
 Sustainability data is only useful when people can interpret and investigate it.
 
