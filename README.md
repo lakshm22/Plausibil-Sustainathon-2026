@@ -89,6 +89,7 @@ Plausibil uses a frontend-backend architecture.
 - **Database:** SQLite, PostgreSQL
 - **Data processing:** PDF text extraction and metric normalization
 - **Machine learning:** Isolation Forest
+- **Explainable AI:** SHAP (SHapley Additive exPlanations)
 - **Development:** Node.js, npm, Uvicorn
 
 ## Getting Started
