@@ -11,7 +11,7 @@ Instead of treating every reported number as automatically reliable, Plausibil h
 
 ---
 
-## 🌍 The Problem
+## The Problem
 
 Companies publish sustainability and emissions disclosures, but interpreting these reports consistently can be challenging.
 
